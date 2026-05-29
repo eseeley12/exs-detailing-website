@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EXS Mobile Detailing | Melbourne's Premium Mobile Car Detailer | Kilmore</title>
+<meta name="description" content="EXS Mobile Detailing — Melbourne's highest rated mobile car detailing service. Serving Kilmore, Wallan, Broadford and all of Melbourne. Ceramic coating, paint correction, interior and exterior detailing.">
+<!-- Favicon - logo icon in browser tab and Google -->
+<link rel="icon" type="image/jpeg" href="images/exs-logo.jpg">
+<link rel="apple-touch-icon" href="images/exs-logo.jpg">
+
+<!-- Google / Search Engine SEO -->
+<meta name="robots" content="index, follow">
+<meta name="author" content="EXS Mobile Detailing">
+<meta name="keywords" content="mobile car detailing Melbourne, car detailing Kilmore, ceramic coating Melbourne, paint correction Melbourne, mobile detailer Wallan Broadford, EXS Mobile Detailing">
+
+<!-- Open Graph - how it looks when shared on Facebook/Instagram -->
+<meta property="og:title" content="EXS Mobile Detailing | Melbourne's Premium Mobile Car Detailer">
+<meta property="og:description" content="Melbourne's highest rated mobile car detailing service. Serving Kilmore, Wallan, Broadford and all of Melbourne.">
+<meta property="og:image" content="images/exs-logo.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.exsmobiledetailing.com.au">
+
+<!-- Canonical URL -->
+<link rel="canonical" href="https://www.exsmobiledetailing.com.au">
+
+
+<!-- Leaflet CSS & JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{--blue:#1E90FF;--blue-dark:#0066CC;--black:#0A0A0A;--dark:#111111;--dark2:#161616;--dark3:#1C1C1C;--gray:#9CA3AF;--gray-light:#D1D5DB;--border:#2A2A2A;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--black);color:#fff;font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;overflow-x:hidden;}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,10,0.88);backdrop-filter:blur(20px);border-bottom:1px solid rgba(30,144,255,0.12);padding:0 5%;}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px;}
+  .nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+  .nav-brand-img{height:58px;width:58px;object-fit:cover;border-radius:50%;border:2px solid rgba(30,144,255,0.5);flex-shrink:0;}
+  .nav-brand-name{font-size:17px;font-weight:800;color:#fff;letter-spacing:0.01em;white-space:nowrap;}
+  .nav-brand-name .exs{color:var(--blue);font-style:italic;}
+  .nav-links{display:flex;gap:32px;list-style:none;}
+  .nav-links a{color:var(--gray-light);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.2s;}
+  .nav-links a:hover{color:var(--blue);}
+  .nav-cta{background:var(--blue);color:#fff;padding:10px 22px;border-radius:4px;font-size:13px;font-weight:700;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;transition:all 0.2s;}
+  .nav-cta:hover{background:var(--blue-dark);transform:translateY(-1px);}
+
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;}
+  .hero-bg{position:absolute;inset:0;overflow:hidden;}
+  .hero-bg::after{content:'';position:absolute;top:-10%;left:-10%;right:-10%;bottom:-10%;background:url('images/hero-bg.jpg') center 55% / cover no-repeat;}
+  .hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(105deg,rgba(0,0,0,0.88) 40%,rgba(0,0,0,0.35) 100%);}
+  .hero-overlay2{position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(10,10,10,1) 0%,transparent 35%);}
+  .hero-content{position:relative;z-index:2;padding:140px 5% 160px;max-width:700px;}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(30,144,255,0.12);border:1px solid rgba(30,144,255,0.35);color:var(--blue);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:7px 16px;border-radius:2px;margin-bottom:20px;}
+  .hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulse 2s infinite;flex-shrink:0;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+  .hero-reviews{display:inline-flex;align-items:center;gap:14px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:6px;padding:11px 18px;margin-bottom:20px;}
+  .review-stars span{color:#FBBC04;font-size:17px;}
+  .review-score{font-size:20px;font-weight:800;color:#fff;line-height:1;}
+  .review-count{font-size:12px;color:var(--gray);margin-top:1px;}
+  .review-divider{width:1px;height:32px;background:rgba(255,255,255,0.14);}
+  .review-verified{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--gray-light);}
+  .hero h1{font-size:clamp(38px,6vw,70px);font-weight:800;line-height:1.06;letter-spacing:-0.025em;margin-bottom:18px;}
+  .hero h1 span{color:var(--blue);}
+  .hero p{font-size:17px;color:var(--gray-light);margin-bottom:32px;max-width:540px;line-height:1.75;}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn-primary{background:var(--blue);color:#fff;padding:15px 34px;border-radius:4px;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;}
+  .btn-primary:hover{background:var(--blue-dark);transform:translateY(-2px);}
+  .btn-secondary{background:transparent;color:#fff;padding:15px 34px;border-radius:4px;font-size:14px;font-weight:600;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;border:1px solid rgba(255,255,255,0.25);transition:all 0.2s;}
+  .btn-secondary:hover{border-color:var(--blue);color:var(--blue);}
+  .hero-stats{position:absolute;bottom:0;left:0;right:0;z-index:2;background:rgba(10,10,10,0.96);border-top:1px solid rgba(30,144,255,0.15);display:flex;}
+  .stat{flex:1;padding:22px 5%;border-right:1px solid var(--border);}
+  .stat:last-child{border-right:none;}
+  .stat-num{font-size:26px;font-weight:800;color:#fff;line-height:1;}
+  .stat-num span{color:var(--blue);}
+  .stat-label{font-size:11px;color:var(--gray);letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;}
+
+  .reviews-banner{background:var(--dark);border-top:1px solid rgba(30,144,255,0.1);border-bottom:1px solid rgba(30,144,255,0.1);padding:36px 5%;}
+  .reviews-banner-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;}
+  .reviews-main{display:flex;align-items:center;gap:20px;}
+  .reviews-big-score{font-size:56px;font-weight:900;color:#fff;line-height:1;}
+  .reviews-right{display:flex;flex-direction:column;gap:5px;}
+  .reviews-stars-row span{color:#FBBC04;font-size:22px;}
+  .reviews-label{font-size:13px;color:var(--gray);}
+  .reviews-label strong{color:#fff;}
+  .reviews-verified{display:flex;align-items:center;gap:5px;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#4ade80;margin-top:1px;}
+  .reviews-badge{display:flex;align-items:center;gap:10px;background:rgba(30,144,255,0.08);border:1px solid rgba(30,144,255,0.2);border-radius:6px;padding:14px 22px;}
+  .reviews-badge-icon{font-size:26px;}
+  .reviews-badge-text strong{display:block;font-size:14px;color:#fff;}
+  .reviews-badge-text span{font-size:12px;color:var(--gray);}
+  .reviews-cta{background:var(--blue);color:#fff;padding:12px 24px;border-radius:4px;font-size:13px;font-weight:700;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;transition:background 0.2s;}
+  .reviews-cta:hover{background:var(--blue-dark);}
+
+  section{padding:100px 5%;}
+  .section-label{font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+  .section-title{font-size:clamp(28px,4vw,44px);font-weight:700;line-height:1.15;margin-bottom:16px;}
+  .section-sub{font-size:17px;color:var(--gray);max-width:580px;line-height:1.7;}
+  .divider{width:48px;height:2px;background:var(--blue);margin:24px 0;}
+
+  .about{background:var(--dark);}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:60px;}
+  .about-img-wrap{position:relative;}
+  .about-img{
+    width:100%;border-radius:4px;object-fit:cover;height:520px;
+    object-position:center 62%;
+  }
+  .about-text .section-label{font-size:13px;letter-spacing:0.14em;margin-bottom:10px;}
+  .about-text p{color:var(--gray-light);font-size:16px;line-height:1.8;margin-bottom:16px;}
+  .about-features{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px;}
+  .feat-item{display:flex;align-items:center;gap:10px;color:var(--gray-light);font-size:14px;}
+  .feat-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;}
+  .warranty-banner{margin-top:32px;background:rgba(30,144,255,0.08);border:1px solid rgba(30,144,255,0.25);border-radius:6px;padding:16px 20px;display:flex;align-items:center;gap:14px;}
+  .warranty-icon{font-size:26px;flex-shrink:0;}
+  .warranty-text strong{display:block;font-size:14px;color:#fff;margin-bottom:2px;}
+  .warranty-text span{font-size:13px;color:var(--gray);}
+
+  .services{background:var(--black);}
+  .services-intro{margin-top:24px;max-width:780px;}
+  .services-intro p{font-size:15px;color:var(--gray);line-height:1.75;margin-bottom:12px;}
+  .services-intro .tagline{font-size:16px;color:var(--gray-light);font-style:italic;border-left:3px solid var(--blue);padding-left:16px;margin-top:16px;}
+  .services-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:3px;margin-top:40px;border-radius:4px;overflow:hidden;}
+  .service-card{position:relative;height:460px;overflow:hidden;cursor:pointer;}
+  .service-card-bg{position:absolute;inset:0;background-size:cover;transition:transform 0.6s ease;}
+  .service-card:hover .service-card-bg{transform:scale(1.06);}
+  .service-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.95) 0%,rgba(0,0,0,0.5) 50%,rgba(0,0,0,0.1) 100%);}
+  .service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue);z-index:3;transform:scaleX(0);transition:transform 0.3s;transform-origin:left;}
+  .service-card:hover::before{transform:scaleX(1);}
+  .service-card-content{position:absolute;bottom:0;left:0;right:0;padding:36px 32px;z-index:2;}
+  .service-card h3{font-size:22px;font-weight:700;margin-bottom:12px;color:#fff;}
+  .service-card p{font-size:14px;color:rgba(255,255,255,0.78);line-height:1.7;}
+  .service-card-tag{display:inline-block;margin-top:18px;color:var(--blue);font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border-bottom:1px solid var(--blue);padding-bottom:2px;text-decoration:none;}
+
+  .process{background:var(--dark);}
+  .process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:60px;position:relative;}
+  .process-steps::before{content:'';position:absolute;top:36px;left:12.5%;right:12.5%;height:1px;background:linear-gradient(90deg,var(--blue),rgba(30,144,255,0.2));}
+  .step{text-align:center;padding:0 20px;}
+  .step-num{width:72px;height:72px;border-radius:50%;border:1px solid rgba(30,144,255,0.4);background:var(--dark2);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:24px;font-weight:700;color:var(--blue);position:relative;z-index:1;}
+  .step h4{font-size:15px;font-weight:600;margin-bottom:8px;}
+  .step p{font-size:13px;color:var(--gray);line-height:1.6;}
+
+  .gallery{background:var(--black);}
+  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,320px);gap:3px;margin-top:60px;border-radius:4px;overflow:hidden;}
+  .gallery-item{position:relative;overflow:hidden;background:var(--dark3);}
+  .gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s;display:block;}
+  .gallery-item:hover img{transform:scale(1.06);}
+  .gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.5) 0%,transparent 50%);opacity:0;transition:opacity 0.3s;}
+  .gallery-item:hover .gallery-overlay{opacity:1;}
+
+  /* AREAS */
+  .areas{background:var(--dark);}
+  .areas-layout{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;margin-top:60px;}
+
+  /* Leaflet map styling */
+  #exs-map{
+    height:440px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    z-index:1;
+  }
+  .map-note{margin-top:14px;text-align:center;font-size:14px;color:var(--gray);line-height:1.6;padding:14px 16px;background:rgba(30,144,255,0.06);border:1px solid rgba(30,144,255,0.15);border-radius:6px;}
+  .map-note a{color:var(--blue);text-decoration:none;font-weight:600;}
+  .map-note a:hover{text-decoration:underline;}
+
+  /* Override Leaflet popup to match dark theme */
+  .leaflet-popup-content-wrapper{background:#161616;color:#fff;border:1px solid #1E90FF;border-radius:6px;box-shadow:0 4px 20px rgba(30,144,255,0.2);}
+  .leaflet-popup-tip{background:#161616;}
+  .leaflet-popup-content{margin:10px 14px;font-family:'Segoe UI',sans-serif;font-size:13px;}
+  .leaflet-popup-content strong{color:#1E90FF;display:block;margin-bottom:2px;font-size:14px;}
+  .leaflet-container{background:#0f0f0f;}
+
+  .areas-list-wrap h4{font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;}
+  .areas-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .area-pill{background:var(--dark2);border:1px solid var(--border);padding:12px 16px;border-radius:4px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--gray-light);transition:border-color 0.2s,color 0.2s;}
+  .area-pill:hover{border-color:var(--blue);color:#fff;}
+  .area-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;}
+  .areas-note{margin-top:20px;font-size:13px;color:var(--gray);line-height:1.6;}
+  .areas-note a{color:var(--blue);text-decoration:none;}
+
+  .contact{background:var(--black);}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:60px;}
+  .contact-info{display:flex;flex-direction:column;gap:24px;}
+  .contact-item{display:flex;align-items:flex-start;gap:16px;padding:20px;background:var(--dark);border:1px solid var(--border);border-radius:4px;}
+  .contact-icon{width:40px;height:40px;border-radius:4px;background:rgba(30,144,255,0.1);border:1px solid rgba(30,144,255,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .contact-item h4{font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);margin-bottom:4px;}
+  .contact-item p,.contact-item a{font-size:15px;color:var(--gray-light);text-decoration:none;}
+  .contact-form{display:flex;flex-direction:column;gap:16px;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .form-group{display:flex;flex-direction:column;gap:6px;}
+  .form-group label{font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--gray);}
+  .form-group input,.form-group select,.form-group textarea{background:var(--dark2);border:1px solid var(--border);color:#fff;padding:12px 16px;border-radius:4px;font-size:14px;font-family:inherit;transition:border-color 0.2s;outline:none;}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue);}
+  .form-group select option{background:var(--dark2);}
+  .form-group textarea{resize:vertical;min-height:120px;}
+  .form-submit{background:var(--blue);color:#fff;padding:14px;border-radius:4px;font-size:14px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border:none;cursor:pointer;transition:background 0.2s;width:100%;}
+  .form-submit:hover{background:var(--blue-dark);}
+
+  footer{background:var(--dark);border-top:1px solid var(--border);padding:60px 5% 32px;}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;margin-bottom:48px;}
+  .footer-brand-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .footer-brand-row img{height:36px;width:36px;object-fit:cover;border-radius:50%;border:1.5px solid rgba(30,144,255,0.35);}
+  .footer-brand-row .brand-name{font-size:16px;font-weight:800;color:#fff;white-space:nowrap;}
+  .footer-brand-row .brand-name .exs{color:var(--blue);font-style:italic;}
+  .footer-brand p{font-size:14px;color:var(--gray);line-height:1.7;max-width:280px;}
+  .footer-col h5{font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;}
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .footer-col ul li a{font-size:14px;color:var(--gray);text-decoration:none;transition:color 0.2s;}
+  .footer-col ul li a:hover{color:#fff;}
+  .footer-bottom{border-top:1px solid var(--border);padding-top:24px;display:flex;justify-content:space-between;align-items:center;}
+  .footer-bottom p{font-size:13px;color:var(--gray);}
+  .social-links{display:flex;gap:12px;}
+  .social-link{width:36px;height:36px;border-radius:4px;background:var(--dark2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;text-decoration:none;color:var(--gray);transition:all 0.2s;}
+  .social-link:hover{border-color:var(--blue);color:var(--blue);}
+
+  @media(max-width:768px){
+    .nav-links{display:none;}
+    .services-grid,.about-grid,.contact-grid,.footer-grid,.areas-layout{grid-template-columns:1fr;}
+    .process-steps{grid-template-columns:1fr 1fr;}
+    .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,220px);}
+    .service-card{height:380px;}
+    #exs-map{height:320px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">
+      <img src="images/exs-logo.jpg" alt="EXS logo" class="nav-brand-img">
+      
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="tel:0408293414" class="nav-cta">📞 0408 293 414</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-overlay2"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><div class="hero-badge-dot"></div>Melbourne's Premium Mobile Car Detailer</div>
+    <div class="hero-reviews">
+      <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <div><div class="review-score">5.0</div><div class="review-count">100+ Reviews</div></div>
+      <div class="review-divider"></div>
+      <div class="review-verified"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Verified on Google</div>
+    </div>
+    <h1>Your Car Deserves<br><span>Perfection.</span></h1>
+    <p>Welcome to the world of mobile auto detailing, where your car is pampered to perfection in the comfort of your own driveway.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Claim Your Free Quote →</a>
+      <a href="#services" class="btn-secondary">Our Services</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">100<span>%</span></div><div class="stat-label">Mobile — We Come To You</div></div>
+    <div class="stat"><div class="stat-num">1000<span>+</span></div><div class="stat-label">Vehicles Protected</div></div>
+    <div class="stat"><div class="stat-num">5.0<span>★</span></div><div class="stat-label">Google Rating</div></div>
+    <div class="stat"><div class="stat-num">100<span>+</span></div><div class="stat-label">5-Star Reviews</div></div>
+  </div>
+</section>
+
+<div class="reviews-banner">
+  <div class="reviews-banner-inner">
+    <div class="reviews-main">
+      <div class="reviews-big-score">5.0</div>
+      <div class="reviews-right">
+        <div class="reviews-stars-row"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <div class="reviews-label"><strong>100+ Reviews</strong> across Google &amp; Facebook</div>
+        <div class="reviews-verified"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><span>Verified Business</span></div>
+      </div>
+    </div>
+    <div class="reviews-badge"><div class="reviews-badge-icon">🏆</div><div class="reviews-badge-text"><strong>Highest Rated Car Detailing Service</strong><span>Mitchell Shire Area — 2026</span></div></div>
+    <div class="reviews-badge"><div class="reviews-badge-icon">💬</div><div class="reviews-badge-text"><strong>"Exceeded every expectation"</strong><span>— recent Google review</span></div></div>
+    <a href="https://www.google.com/search?q=EXS+Mobile+Detailing+Kilmore" target="_blank" class="reviews-cta">Read Reviews →</a>
+  </div>
+</div>
+
+<section class="about" id="about">
+  <div class="section-label">About Us</div>
+  <h2 class="section-title">Passion-Driven.<br>Detail-Obsessed.</h2>
+  <div class="about-grid">
+    <div class="about-img-wrap">
+      <img src="images/ethan-seeley---exs-mobile-deta.jpg" alt="Ethan Seeley — EXS Mobile Detailing founder" class="about-img">
+    </div>
+    <div class="about-text">
+      <div class="section-label">Founded by Ethan Seeley</div>
+      <div class="divider"></div>
+      <p>Founded by Ethan Seeley, EXS Mobile Detailing was created to deliver premium, reliable vehicle detailing without the hassle of drop-offs. We bring a fully equipped, professional-grade setup directly to your door — the same high-end results you'd expect from a prestige studio, in the comfort of your own driveway.</p>
+      <p>We service Melbourne and surrounding areas — from Kilmore and Wallan through to the city — caring for everything from exotic supercars to daily drivers with the same meticulous attention to detail. Every vehicle that leaves our hands is treated like it's our own.</p>
+      <div class="about-features">
+        <div class="feat-item"><div class="feat-dot"></div>Paint correction certified</div>
+        <div class="feat-item"><div class="feat-dot"></div>Ceramic coating certified</div>
+        <div class="feat-item"><div class="feat-dot"></div>Melbourne-wide coverage</div>
+        <div class="feat-item"><div class="feat-dot"></div>Full mobile setup — we come to you</div>
+        <div class="feat-item"><div class="feat-dot"></div>Premium certified products</div>
+        <div class="feat-item"><div class="feat-dot"></div>Complete coating warranty included</div>
+      </div>
+      <div class="warranty-banner">
+        <div class="warranty-icon">🛡️</div>
+        <div class="warranty-text">
+          <strong>Ceramic Coating Warranty Included</strong>
+          <span>All ceramic coating packages come backed by a product warranty — protecting your investment long after we leave.</span>
+        </div>
+      </div>
+      <a href="#contact" class="btn-primary" style="margin-top:28px;display:inline-flex;">Claim Your Free Quote →</a>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="section-label">What We Do</div>
+  <h2 class="section-title">Our Services</h2>
+  <div class="services-intro">
+    <p>Our detailing services include interior cleaning, deep cleaning, car washing + waxing, paint correction, ceramic coatings, engine detailing, headlight restoration and much more. When selecting any of our detailing services you will receive friendly, professional and quality service for your car.</p>
+    <div class="tagline">From prestige exotics to daily drivers and 4WDs — we tailor our protection solutions to every vehicle type and budget.</div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-card-bg" style="background-image:url('images/service-bg-1.jpg');background-position:center top;"></div>
+      <div class="service-card-overlay"></div>
+      <div class="service-card-content">
+        <h3>Interior Detailing</h3>
+        <p>Our interior detailing service includes vacuuming, carpet and seat shampooing, stain extraction, deep cleaning of all surfaces, and conditioning — leaving your cabin fresh and revitalized.</p>
+        <a href="#contact" class="service-card-tag">Claim Your Free Quote →</a>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-card-bg" style="background-image:url('images/service-bg-2.jpg');background-position:center center;"></div>
+      <div class="service-card-overlay"></div>
+      <div class="service-card-content">
+        <h3>Exterior Detailing</h3>
+        <p>Our exterior detailing service goes beyond a basic wash. We safely hand wash your vehicle, remove embedded contamination using iron remover and clay bar treatment, thoroughly detail the tires, rims, and wheel wells, and apply a premium paint sealant.</p>
+        <a href="#contact" class="service-card-tag">Claim Your Free Quote →</a>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-card-bg" style="background-image:url('images/service-bg-3.jpg');background-position:center 40%;"></div>
+      <div class="service-card-overlay"></div>
+      <div class="service-card-content">
+        <h3>Ceramic Coating</h3>
+        <p>A durable, high-gloss hydrophobic coating that bonds to your paint's clear coat, offering long-term protection against UV rays, harsh weather, and contaminants — while making future washes faster and easier.</p>
+        <a href="#contact" class="service-card-tag">Claim Your Free Quote →</a>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-card-bg" style="background-image:url('images/service-bg-4.jpg');background-position:center 70%;"></div>
+      <div class="service-card-overlay"></div>
+      <div class="service-card-content">
+        <h3>Paint Correction</h3>
+        <p>A multi-stage machine polishing process that removes swirl marks, light scratches, and oxidation — restoring clarity, depth, and a like-new appearance to your vehicle's paintwork.</p>
+        <a href="#contact" class="service-card-tag">Claim Your Free Quote →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <div class="section-label">How It Works</div>
+  <h2 class="section-title">Simple. Seamless. Professional.</h2>
+  <div class="process-steps">
+    <div class="step"><div class="step-num">01</div><h4>Quote &amp; Booking</h4><p>Give us a call or use the form online. We'll ask a few questions about the car and the type of service needed, then book a time that suits you.</p></div>
+    <div class="step"><div class="step-num">02</div><h4>On-Site Arrival</h4><p>We arrive on time with all the gear ready. No need to supply power or water. We check the car, explain what's involved, and then we're onto it.</p></div>
+    <div class="step"><div class="step-num">03</div><h4>Detail &amp; Finish</h4><p>Everything is done by hand with careful attention to every surface. Whether it's stain removal or paint correction, we make sure the job ticks all the boxes.</p></div>
+    <div class="step"><div class="step-num">04</div><h4>Final Walkthrough</h4><p>We go over the results with you once the job is done. You'll get care tips and we won't leave until everything's sorted and spotless.</p></div>
+  </div>
+</section>
+
+<section class="gallery" id="gallery">
+  <div class="section-label">Our Work</div>
+  <h2 class="section-title">Results That Speak For Themselves</h2>
+  <div class="gallery-grid">
+    <div class="gallery-item"><img src="images/lamborghini-murcielago-detail.jpg" alt="Lamborghini Murcielago detail Melbourne"><div class="gallery-overlay"></div></div>
+    <div class="gallery-item"><img src="images/lamborghini-diablo-detail-kilm.jpg" alt="Lamborghini Diablo detail Kilmore"><div class="gallery-overlay"></div></div>
+    <div class="gallery-item"><img src="images/mercedes-amg-interior-detail.jpg" alt="Mercedes AMG interior detail"><div class="gallery-overlay"></div></div>
+    <div class="gallery-item"><img src="images/porsche-wheel-ceramic-coating.jpg" alt="Porsche wheel ceramic coating"><div class="gallery-overlay"></div></div>
+    <div class="gallery-item"><img src="images/bentley-detail-melbourne.jpg" alt="Bentley detail Melbourne"><div class="gallery-overlay"></div></div>
+    <div class="gallery-item"><img src="images/bentley-headlight-detail.jpg" alt="Bentley headlight detail"><div class="gallery-overlay"></div></div>
+  </div>
+</section>
+
+<section class="areas" id="areas">
+  <div class="section-label">Service Area</div>
+  <h2 class="section-title">We Come To You</h2>
+  <p class="section-sub">Based in Kilmore VIC 3764 — fully mobile across Melbourne and surrounding areas. No drop-off, no waiting.</p>
+  <div class="areas-layout">
+
+    <div>
+      <!-- Leaflet interactive map -->
+      <div id="exs-map"></div>
+      <div class="map-note">
+        Can't see your area? <a href="#contact">Contact us</a> — we most likely service your area!
+      </div>
+    </div>
+
+    <div class="areas-list-wrap">
+      <h4>Areas We Service</h4>
+      <div class="areas-grid">
+        <div class="area-pill"><div class="area-dot"></div>Kilmore</div>
+        <div class="area-pill"><div class="area-dot"></div>Broadford</div>
+        <div class="area-pill"><div class="area-dot"></div>Wallan</div>
+        <div class="area-pill"><div class="area-dot"></div>Wandong</div>
+        <div class="area-pill"><div class="area-dot"></div>Beveridge</div>
+        <div class="area-pill"><div class="area-dot"></div>Lancefield</div>
+        <div class="area-pill"><div class="area-dot"></div>Romsey</div>
+        <div class="area-pill"><div class="area-dot"></div>Seymour</div>
+        <div class="area-pill"><div class="area-dot"></div>Whittlesea</div>
+        <div class="area-pill"><div class="area-dot"></div>Craigieburn</div>
+        <div class="area-pill"><div class="area-dot"></div>Sunbury</div>
+        <div class="area-pill"><div class="area-dot"></div>Melbourne &amp; More</div>
+      </div>
+      <p class="areas-note">Based in Kilmore VIC 3764 — we travel across Melbourne and the Mitchell Shire with our full mobile setup. Not sure if we cover your area? <a href="#contact">Get in touch</a> and we'll sort it out.</p>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="section-label">Get In Touch</div>
+  <h2 class="section-title">Claim Your Free Quote Today</h2>
+  <p class="section-sub">Skip the hassle of drop-offs and waiting around. Book a visit and we'll come to you anywhere across Melbourne.</p>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <div class="contact-item"><div class="contact-icon">📞</div><div><h4>Call Us</h4><a href="tel:0408293414">0408 293 414</a></div></div>
+      <div class="contact-item"><div class="contact-icon">✉️</div><div><h4>Email Us</h4><a href="mailto:ethan.seeley1234@gmail.com">ethan.seeley1234@gmail.com</a></div></div>
+      <div class="contact-item"><div class="contact-icon">📍</div><div><h4>Location</h4><p>Kilmore VIC 3764 — Mobile across Melbourne &amp; Mitchell Shire</p></div></div>
+      <div class="contact-item"><div class="contact-icon">📸</div><div><h4>Follow Our Work</h4><a href="https://www.instagram.com/exs.mobile.detailing/" target="_blank">@exs.mobile.detailing</a></div></div>
+    </div>
+    <!-- FORMSPREE: Replace mykvpqpj with your actual ID from formspree.io -->
+    <form class="contact-form" id="quote-form" action="https://formspree.io/f/mykvpqpj" method="POST">
+      <div class="form-row">
+        <div class="form-group"><label>Name</label><input type="text" name="name" placeholder="Your name" required></div>
+        <div class="form-group"><label>Phone</label><input type="tel" name="phone" placeholder="0400 000 000" required></div>
+      </div>
+      <div class="form-group"><label>Email</label><input type="email" name="email" placeholder="your@email.com"></div>
+      <div class="form-group"><label>How can we help?</label>
+        <select name="service"><option>Interior Detailing</option><option>Exterior Detailing</option><option>Ceramic Coating</option><option>Paint Correction</option><option>Full Detail Package</option><option>Not Sure — Advise Me</option></select>
+      </div>
+      <div class="form-group"><label>Vehicle &amp; Details</label><textarea name="message" placeholder="Make, model, year, condition and what you&#39;re after..."></textarea></div>
+      <div id="form-success" style="display:none;background:rgba(74,222,128,0.1);border:1px solid #4ade80;border-radius:6px;padding:16px 20px;color:#4ade80;font-size:14px;font-weight:600;text-align:center;">
+        ✅ Quote request sent! Ethan will be in touch shortly.
+      </div>
+      <div id="form-error" style="display:none;background:rgba(239,68,68,0.1);border:1px solid #ef4444;border-radius:6px;padding:16px 20px;color:#ef4444;font-size:14px;font-weight:600;text-align:center;">
+        ❌ Something went wrong. Please call us on 0408 293 414.
+      </div>
+      <button type="submit" class="form-submit" id="form-btn">Claim Your Free Quote &rarr;</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-brand-row">
+        <img src="images/exs-mobile-detailing-logo.jpg" alt="EXS Mobile Detailing logo">
+        <span class="brand-name"><span class="exs">EXS</span> Mobile Detailing</span>
+      </div>
+      <p>Melbourne's highest rated mobile car detailing service. Serving Kilmore, Wallan, Melbourne and the Mitchell Shire — delivering perfection, every time.</p>
+    </div>
+    <div class="footer-col"><h5>Navigate</h5><ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#process">How It Works</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul></div>
+    <div class="footer-col"><h5>Services</h5><ul>
+      <li><a href="#services">Interior Detailing</a></li>
+      <li><a href="#services">Exterior Detailing</a></li>
+      <li><a href="#services">Ceramic Coating</a></li>
+      <li><a href="#services">Paint Correction</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 EXS Mobile Detailing. All rights reserved. Kilmore, VIC 3764.</p>
+    <div class="social-links">
+      <a href="https://www.facebook.com/profile.php?id=61564332857362" class="social-link" target="_blank">f</a>
+      <a href="https://www.instagram.com/exs.mobile.detailing/" class="social-link" target="_blank">ig</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Leaflet map — centred on Kilmore 3764
+var map = L.map('exs-map', {
+  center: [-37.0985, 144.9517],
+  zoom: 9,
+  zoomControl: true,
+  scrollWheelZoom: false
+});
+
+// Dark tile layer from CartoDB
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+  subdomains: 'abcd',
+  maxZoom: 19
+}).addTo(map);
+
+// Service radius circle — centred on Kilmore, ~65km to cover Melbourne CBD
+L.circle([-37.0985, 144.9517], {
+  radius: 65000,
+  color: '#1E90FF',
+  fillColor: '#1E90FF',
+  fillOpacity: 0.06,
+  weight: 2,
+  dashArray: '8, 6'
+}).addTo(map);
+
+// Custom blue marker icon
+var blueIcon = L.divIcon({
+  className: '',
+  html: '<div style="width:14px;height:14px;background:#1E90FF;border-radius:50%;border:3px solid #fff;box-shadow:0 0 12px rgba(30,144,255,0.8);"></div>',
+  iconSize: [14, 14],
+  iconAnchor: [7, 7],
+  popupAnchor: [0, -10]
+});
+
+// Home base marker — Kilmore
+var kilmoreIcon = L.divIcon({
+  className: '',
+  html: '<div style="width:20px;height:20px;background:#1E90FF;border-radius:50%;border:3px solid #fff;box-shadow:0 0 20px rgba(30,144,255,1);animation:none;"></div>',
+  iconSize: [20, 20],
+  iconAnchor: [10, 10],
+  popupAnchor: [0, -12]
+});
+
+// All service area locations
+var locations = [
+  { name: 'Kilmore', lat: -37.0985, lng: 144.9517, base: true, desc: 'EXS Mobile Detailing — Base Location' },
+  { name: 'Broadford', lat: -37.2027, lng: 145.0637, desc: 'Mobile car detailing in Broadford' },
+  { name: 'Seymour', lat: -37.0200, lng: 145.1280, desc: 'Mobile car detailing in Seymour' },
+  { name: 'Wallan', lat: -37.4167, lng: 144.9833, desc: 'Mobile car detailing in Wallan' },
+  { name: 'Wandong', lat: -37.3167, lng: 145.0167, desc: 'Mobile car detailing in Wandong' },
+  { name: 'Beveridge', lat: -37.4667, lng: 144.9833, desc: 'Mobile car detailing in Beveridge' },
+  { name: 'Lancefield', lat: -37.2833, lng: 144.7333, desc: 'Mobile car detailing in Lancefield' },
+  { name: 'Romsey', lat: -37.3500, lng: 144.7333, desc: 'Mobile car detailing in Romsey' },
+  { name: 'Craigieburn', lat: -37.5997, lng: 144.9455, desc: 'Mobile car detailing in Craigieburn' },
+  { name: 'Sunbury', lat: -37.5764, lng: 144.7281, desc: 'Mobile car detailing in Sunbury' },
+  { name: 'Whittlesea', lat: -37.5142, lng: 145.1169, desc: 'Mobile car detailing in Whittlesea' },
+  { name: 'Melbourne CBD', lat: -37.8136, lng: 144.9631, desc: 'Mobile car detailing across Melbourne' }
+];
+
+locations.forEach(function(loc) {
+  var marker = L.marker([loc.lat, loc.lng], { icon: loc.base ? kilmoreIcon : blueIcon }).addTo(map);
+  var badge = loc.base ? '<span style="background:#1E90FF;color:#fff;font-size:10px;padding:2px 7px;border-radius:3px;letter-spacing:0.08em;">BASE</span> ' : '';
+  marker.bindPopup('<strong>' + badge + loc.name + '</strong>' + loc.desc);
+});
+</script>
+
+<script>
+// Formspree AJAX submission handler
+var form = document.getElementById('quote-form');
+if(form) {
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var btn = document.getElementById('form-btn');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    var data = new FormData(form);
+    fetch(form.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    }).then(function(response) {
+      if(response.ok) {
+        document.getElementById('form-success').style.display = 'block';
+        document.getElementById('form-error').style.display = 'none';
+        form.reset();
+        btn.style.display = 'none';
+      } else {
+        document.getElementById('form-error').style.display = 'block';
+        btn.textContent = 'Claim Your Free Quote →';
+        btn.disabled = false;
+      }
+    }).catch(function() {
+      document.getElementById('form-error').style.display = 'block';
+      btn.textContent = 'Claim Your Free Quote →';
+      btn.disabled = false;
+    });
+  });
+}
+</script>
+</body>
+</html>
