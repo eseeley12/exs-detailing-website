@@ -138,6 +138,11 @@
   .service-card h3{font-size:22px;font-weight:700;margin-bottom:12px;color:#fff;}
   .service-card p{font-size:14px;color:rgba(255,255,255,0.78);line-height:1.7;}
   .service-card-tag{display:inline-block;margin-top:18px;color:var(--blue);font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border-bottom:1px solid var(--blue);padding-bottom:2px;text-decoration:none;}
+  .service-card-fleet{grid-column:1/-1;height:380px;}
+  .service-card-fleet .service-card-bg{background-position:center 30%;}
+  .service-card-fleet .service-card-content{max-width:700px;}
+  .fleet-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .fleet-badge{background:rgba(30,144,255,0.15);border:1px solid rgba(30,144,255,0.35);color:rgba(255,255,255,0.85);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:5px 12px;border-radius:3px;}
   .process{background:var(--dark);}
   .process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:60px;position:relative;}
   .process-steps::before{content:'';position:absolute;top:36px;left:12.5%;right:12.5%;height:1px;background:linear-gradient(90deg,var(--blue),rgba(30,144,255,0.2));}
@@ -238,6 +243,7 @@
     .reviews-big-score{font-size:44px;}
     .services-grid{grid-template-columns:1fr;}
     .service-card{height:320px;}
+    .service-card-fleet{height:420px;}
     .about-grid{grid-template-columns:1fr;gap:32px;}
     .about-img{height:300px;object-position:center 45%;}
     .about-features{grid-template-columns:1fr;}
@@ -452,6 +458,22 @@
         <h3>Paint Correction</h3>
         <p>Multi-stage machine polishing that removes swirl marks, scratches, and oxidation — restoring clarity and a like-new appearance.</p>
         <a href="#contact" class="service-card-tag">Claim Your Free Quote →</a>
+      </div>
+    </div>
+    <div class="service-card service-card-fleet">
+      <div class="service-card-bg" style="background-image:url('images/fleet-1.jpg');background-position:center 30%;"></div>
+      <div class="service-card-overlay"></div>
+      <div class="service-card-content">
+        <h3>Fleet Detailing</h3>
+        <p>Keeping a fleet looking sharp takes consistency — and that's exactly what we deliver. We work with dealerships, real estate agencies, trade businesses, and corporate fleets across Melbourne and Mitchell Shire. The more vehicles, the better the rate — we'll put together a package that fits your schedule and your budget, so every car representing your business looks the part.</p>
+        <div class="fleet-badges">
+          <span class="fleet-badge">Dealerships</span>
+          <span class="fleet-badge">Real Estate</span>
+          <span class="fleet-badge">Trade Fleets</span>
+          <span class="fleet-badge">Corporate</span>
+          <span class="fleet-badge">Volume Discounts</span>
+        </div>
+        <a href="#contact" class="service-card-tag">Get a Fleet Quote →</a>
       </div>
     </div>
   </div>
